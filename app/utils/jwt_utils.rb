@@ -25,7 +25,7 @@ module JWTUtils
     if error.nil?
       Result::Success.new(decoded)
     else
-      Result::Error.new({error_code: error})
+      Result::Error.new("Verification failed", error)
     end
   end
 
