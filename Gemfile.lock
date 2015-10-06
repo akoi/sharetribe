@@ -539,6 +539,7 @@ DEPENDENCIES
   i18n-tasks (~> 0.6.2)
   jquery-rails (= 2.1.4)
   json (~> 1.8.0)
+  jwt (~> 1.5.1)
   kgio (~> 2.8.0)
   launchy
   lograge
@@ -595,3 +596,6 @@ DEPENDENCIES
   will_paginate
   xpath
   zeus (= 0.15.1)
+
+BUNDLED WITH
+   1.10.6
