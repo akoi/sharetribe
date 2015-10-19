@@ -1,0 +1,28 @@
+FROM akoi/sharetribe-base
+MAINTAINER Anton Bagchi <anton@akoi.com>
+
+# Install build dependencies
+RUN yum install git ruby-devel libxslt libxslt-devel libxml2-devel epel-release -y && yum clean all
+
+# Install supervisor, ncat for db polling during docker compose up, imagemagick, and javascript runtime
+RUN yum install supervisor nc ImageMagick ImageMagick-devel nodejs -y && yum clean all
+
+ENV APP_HOME /app
+
+RUN mkdir $APP_HOME
+# Create log directory for Sphinx logs - look into this
+RUN mkdir $APP_HOME/log
+
+WORKDIR $APP_HOME
+
+ADD Gemfile* $APP_HOME/
+
+RUN bundle install
+
+ADD . $APP_HOME
+
+# Make startup scripts executable
+RUN cd docker && chmod +x start-server.sh start-jobs.sh entrypoint.sh
+
+# Run supervisor
+CMD ["./docker/entrypoint.sh"]

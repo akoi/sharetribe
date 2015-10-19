@@ -1,0 +1,85 @@
+# Sharetribe base image with Sphinx search, Ruby and Bundler
+#
+# Sphinx installation adapted from https://hub.docker.com/r/centurylink/sphinx/
+# Ruby/Bundler installation adapted from https://hub.docker.com/r/tcnksm/centos-ruby/
+FROM centos:7
+
+MAINTAINER Anton Bagchi <anton@akoi.se>
+
+ENV SPHINX_VERSION 2.1.9
+ENV RUBY_MAJOR 2.1
+ENV RUBY_VERSION 2.1.2
+
+# add public key
+RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+# install utils
+RUN yum install wget tar -y -q && yum clean all
+
+#################
+# Sphinx Search #
+#################
+# install sphinxsearch build dependencies
+RUN yum install autoconf automake make libtool gcc-c++ deltarpm -y -q && yum clean all
+
+# install sphinxsearch dependencies for odbc, mysql, postgres, xml
+RUN yum install unixODBC-devel mysql-devel postgresql-devel expat-devel -y -q && yum clean all
+
+# download libstemmer source and extract it
+RUN wget -nv -O - http://snowball.tartarus.org/dist/libstemmer_c.tgz | tar zx
+
+# download re2 source and extract it
+RUN wget -nv -O - https://re2.googlecode.com/files/re2-20140304.tgz | tar zx
+
+# download sphinxsearch source and extract it
+RUN wget -nv -O - http://sphinxsearch.com/files/sphinx-$SPHINX_VERSION-release.tar.gz | tar zx
+
+# copy libstemmer inside sphinxsearch source code
+RUN cp -R libstemmer_c/* sphinx-$SPHINX_VERSION-release/libstemmer_c/
+
+# copy libstemmer inside sphinxsearch source code
+RUN cp -R re2/* sphinx-$SPHINX_VERSION-release/libre2/
+
+# compile and install sphinxsearch
+RUN cd sphinx-$SPHINX_VERSION-release && ./configure --enable-id64 --with-mysql --with-pgsql --with-libstemmer --with-libexpat --with-iconv --with-unixodbc --with-re2
+
+# libstemmer changed the name of the non-UTF8 Hungarian source files,
+# but the released version of sphinx still refers to it under the old name.
+RUN cd sphinx-$SPHINX_VERSION-release && sed -i  s#stem_ISO_8859_1_hungarian#stem_ISO_8859_2_hungarian#g libstemmer_c/Makefile.in
+
+# make
+RUN cd sphinx-$SPHINX_VERSION-release && make
+RUN cd sphinx-$SPHINX_VERSION-release && make install clean
+
+# remove sources
+RUN rm -rf sphinx-2.1.9-release/ && rm -rf libstemmer_c/ && rm -rf re2/
+
+########
+# Ruby #
+########
+RUN yum -y install bzip2 ruby && yum clean all \
+    && mkdir -p /usr/src/ruby \
+    && curl -SL "http://cache.ruby-lang.org/pub/ruby/$RUBY_MAJOR/ruby-$RUBY_VERSION.tar.bz2" | tar -xjC /usr/src/ruby --strip-components=1 \
+    && cd /usr/src/ruby \
+    && autoconf \
+    && ./configure --disable-install-doc \
+    && make \
+    && yum remove -y ruby \
+    && make install \
+    && rm -r /usr/src/ruby
+
+########
+# Gems #
+########
+# skip installing gem documentation
+RUN echo 'gem: --no-rdoc --no-ri' >> "$HOME/.gemrc"
+
+# install things globally, for great justice
+ENV GEM_HOME /usr/local/bundle
+ENV PATH $GEM_HOME/bin:$PATH
+RUN gem install bundler \
+	&& bundle config --global path "$GEM_HOME" \
+	&& bundle config --global bin "$GEM_HOME/bin"
+
+# don't create ".bundle" in all our apps
+ENV BUNDLE_APP_CONFIG $GEM_HOME

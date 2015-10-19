@@ -1,0 +1,31 @@
+# Please Note: if you change the name and/or ports for these containers, you'll 
+# have to change the name of the environment variables used in database.yml 
+# and config.yml to match the docker created env variable names.
+db:
+  image: mysql:latest
+  ports:
+    - "3306:3306"
+  environment:
+    # Extract to environment variables
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_DATABASE=sharetribe_development
+    - MYSQL_USER=sharetribe
+    - MYSQL_PASSWORD=password
+
+app:
+  #image: akoi/sharetribe
+  build: ../
+  dockerfile: docker/Dockerfile.sharetribe
+  ports:
+    - "3000:3000"
+  links:
+    - db
+    - mail
+
+mail:
+  #image: akoi/mailcatcher
+  build: ../
+  dockerfile: docker/Dockerfile.mailcatcher
+  ports:
+    - "1025:1025"
+    - "1080:1080"

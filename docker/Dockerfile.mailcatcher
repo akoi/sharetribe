@@ -1,0 +1,12 @@
+# Basic Mailcatcher image
+FROM ruby:2.1-slim
+MAINTAINER Anton Bagchi <anton@akoi.com>
+
+RUN apt-get update && apt-get install build-essential libsqlite3-dev -y
+
+RUN gem install mailcatcher
+
+EXPOSE 1025
+EXPOSE 1080
+
+ENTRYPOINT ["mailcatcher", "-f", "--ip=0.0.0.0"]
