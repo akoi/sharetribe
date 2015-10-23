@@ -1,12 +1,12 @@
 branches:
   only:
-    - master
-bundler_args: --without development --path=~/.bundle
+  - master
+bundler_args: "--without development --path=~/.bundle"
 language: ruby
 sudo: false
 cache:
   directories:
-  - ~/.bundle
+  - "~/.bundle"
 rvm:
 - 2.1.2
 env:
@@ -17,34 +17,26 @@ env:
   - SUITE="mocha"
   - SUITE="jshint"
   global:
-    - BUNDLE_ARCHIVE="travis-bundle-cache"
-    - AWS_S3_REGION="us-east-1"
-    - AWS_S3_BUCKET="sharetribe-travis-cache"
-    - RAILS_ENV=test
-    - secure: QJBiGsabtqY6qvGdrYoCJtSCOl53jt1dPTYG4Md++icBK4llEzRsXYoNKJdBG9Q6p3vmR/Yw76Ph2dX1lh5GeDE3aPJ1iWNSrUYDoURV/LeTNZR8bGEncJp961qYPWGoKv5t4NlgehJzwpTHIIC3ToRT5RlkZYaxTUNxvbAqj70=
-
-    # Braintree sandbox credentials
-    - braintree_environment: sandbox
-    - secure: JKcR0dOvEzjuL9qrwmPX8E49UzLxK8PslpZR1F3/+bj/ZEB8dqI01eoAVLLB9aoy/7wBMizl1hzgdEk94OJLSiJibXugadOcECpjvbL4n2g8bntiij1HSpsTiBzTJqYrXBN9VCqCCxjvVNsseX4KWfyfWdKNKHX9+1eWAl6gZG8=
-    - secure: X1DiDlQ+HFY8ICLwPD+sw0d1zhxoIPFDvL0WTugRzTcQlTDt+tdLJCsGs523YAp3ci/9kEPDRXlQNTN5l0PZp6S1c1Ye8nO3mTGrlIkKnkB32Y59rpR9T980LgahL3lcod1uc3EM95lOkmvO8Ma4uMM9rWjcYxnyS9TJOXuGbqE=
-    - secure: AquipD3Ru6Xyk2K/mt2jmb/kh0GiAhTpLKlOsg6EdEE4VK/JPJUdbki3K/3jfwmCXZIDVBUfKjG/jt8ui0OKGlcI0ToTu4b9U1ZJ7EuMh2MibcKWb6b5XJlfYXC34jDSM4JSOyuR0ZMi0U1hcT6CJDabs6wSGQrJFiQMRSaDyMg=
-    - secure: VObS2Rnc3KgPz3uO50KiWcxXa+QXrbe0HPVVmzd5AUvJuRRvv0dPJZVrgzVLh8L1KfwFemcGz/Px9Ftt6kHqGeQktrb5QypGRgyuNJccFw0Qrqk2oTE0V8eOovixoufG9pRjPGOJMBenf6IKa3+5qBrCpCmdP2je6QHIkpbG4wk=
+  - BUNDLE_ARCHIVE="travis-bundle-cache"
+  - AWS_S3_REGION="us-east-1"
+  - AWS_S3_BUCKET="sharetribe-travis-cache"
+  - RAILS_ENV=test
+  - secure: QJBiGsabtqY6qvGdrYoCJtSCOl53jt1dPTYG4Md++icBK4llEzRsXYoNKJdBG9Q6p3vmR/Yw76Ph2dX1lh5GeDE3aPJ1iWNSrUYDoURV/LeTNZR8bGEncJp961qYPWGoKv5t4NlgehJzwpTHIIC3ToRT5RlkZYaxTUNxvbAqj70=
+  - braintree_environment: sandbox
+  - secure: JKcR0dOvEzjuL9qrwmPX8E49UzLxK8PslpZR1F3/+bj/ZEB8dqI01eoAVLLB9aoy/7wBMizl1hzgdEk94OJLSiJibXugadOcECpjvbL4n2g8bntiij1HSpsTiBzTJqYrXBN9VCqCCxjvVNsseX4KWfyfWdKNKHX9+1eWAl6gZG8=
+  - secure: X1DiDlQ+HFY8ICLwPD+sw0d1zhxoIPFDvL0WTugRzTcQlTDt+tdLJCsGs523YAp3ci/9kEPDRXlQNTN5l0PZp6S1c1Ye8nO3mTGrlIkKnkB32Y59rpR9T980LgahL3lcod1uc3EM95lOkmvO8Ma4uMM9rWjcYxnyS9TJOXuGbqE=
+  - secure: AquipD3Ru6Xyk2K/mt2jmb/kh0GiAhTpLKlOsg6EdEE4VK/JPJUdbki3K/3jfwmCXZIDVBUfKjG/jt8ui0OKGlcI0ToTu4b9U1ZJ7EuMh2MibcKWb6b5XJlfYXC34jDSM4JSOyuR0ZMi0U1hcT6CJDabs6wSGQrJFiQMRSaDyMg=
+  - secure: VObS2Rnc3KgPz3uO50KiWcxXa+QXrbe0HPVVmzd5AUvJuRRvv0dPJZVrgzVLh8L1KfwFemcGz/Px9Ftt6kHqGeQktrb5QypGRgyuNJccFw0Qrqk2oTE0V8eOovixoufG9pRjPGOJMBenf6IKa3+5qBrCpCmdP2je6QHIkpbG4wk=
 notifications:
-  flowdock:
-    # Main
-    - secure: FY861NHS112q8iU/meT64mfsPSr0JDx3Q4ElLdECAx+3tm6JTlKwVk35INP/pKG9n2um2LY7olDKovCtr1/FlEg9AjmGbrNSxu2ErGmhqyihj4e2qsCKYE/KioMofw1taQlnWXlOOu7ZKu3AJvauT8C4hkMGWvLtZu2ZVxhoLRM=
-    # DevTeam
-    - secure: ExDcKU91PdTOeNEmO3sewSz4AIB0kdLFK18eetuQdTGgreFxOazgsg7rLdkLSk/c51dydB9BWbD6+TASk91ZIYnN7xDBYsltSw1sd8xS04KI2OxoXj/QFDJYy1wpgjyVtoNhG2iuIlpMdela4S5Q9PwOHat/Tm5771ffc0DhfXI=
-    # Sharetribe.org Developers
-    - secure: UzPNtuYZEjujb4KJhmCyJL5nF1UPs8Z9W1Iofo+l9d9kOTAVrCo9so/b/6CXzkabU2aJ5uPmF+sQ3w/QojaXrcpnYMfO1VRZBJtTwzJYy9Bm0uKrK0JC1BE8B4zEZV8WV8AMKi36dRGnGZd6c0AWkwt6feAKND1q5H8IAbqzDNU=
-# Ensure Bundler >= 1.1, don't install rdocs, and fetch a cached bundle from S3
+  slack:
+    secure: kAVh0JM96jGGQzeVET0Pc9es6b8EcrBpmiJm8PtYVgLNbW19dIkj5roLaIuXBdKK3SMv5aUqHe5GwlPF8p2yAAolsHrdvY1eYn9OcfmI2L2FXs3dz6o6jq3cSN+PKPyS05a4KvHgI0AAOQ/qJwxzBrcwRSZRAURkez0qatOoMIm9oLmpCjPsgqH5d0h2Ar+5yXbdBO7y3oKVopJjebfcDo01jK3jVOVImF+assds23VoZBaxfazoVGcNSJTSuiH0Gj559lHJHohwdcYkflfMLTDABII4ERrMnSQGgQjJFkbSwdjC1vpPNCH408hnR2pAgbkr6nEJ0Hf4J32xkltpS1XEUpaBc70eTrzpXlr56yw/y+liQSatrIvUtbTJJ9QnyQD7UQKRu2U2Bd3zx7bhDLc99Yd+VC4tptIntMGMODj6/jG60IdgumyXKwDXwclMUQpZSmezhamS0CTOYAkJ/MmBGQOETgTVYBxHzgb6LOE9suZi9/D58hY54IcpnwmBtWEhHTjqPDH7ee4mlb6TXVuVl2P11sJXt3DqzykkOHHJnQs+2v+RkAfN41bw2BaFy4ZO1shBhWg+ugI7uuF9sqYqp208yDFFMj+oVjxI4I1DcaOtjWSOUl4E+hUVF8LPNA9Kaq4blwEpffsrUzbJ1Ml73eHZ038bUF7mXpA+UyM=
 before_install:
-- ./travis/before_install.sh
+- "./travis/before_install.sh"
 install:
-- ./travis/install.sh
+- "./travis/install.sh"
 before_script:
-- ./travis/before_script.sh
+- "./travis/before_script.sh"
 script:
-- ./travis/script.sh
+- "./travis/script.sh"
 after_script:
 - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && bundle_cache || false'
